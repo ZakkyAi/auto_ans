@@ -1,4 +1,4 @@
-const DEFAULT_API_KEY = 'AIzaSyBLv829idb6D2ij5r-1o7JSM9IBnsYpPc4';
+const DEFAULT_API_KEY = ''; // Add your Gemini API key here or enter it in the popup
 const DEFAULT_MODEL = 'gemini-2.5-flash';
 
 document.addEventListener('DOMContentLoaded', () => {

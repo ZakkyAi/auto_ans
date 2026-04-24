@@ -1,5 +1,6 @@
 # Environment variables (contains API keys)
 .env
+config.js
 
 # OS
 .DS_Store
