@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Answer - AI Helper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>⚙️ Settings</h3>
+                <button class="modal-close" onclick="toggleSettings()">✕</button>
+            </div>
+            <div class="modal-body">
+                <label class="input-label">Gemini API Key</label>
+                <input type="password" id="apiKeyInput" class="text-input" placeholder="AIza..." />
+                <p class="hint">Get your key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a></p>
+                <label class="input-label" style="margin-top:16px">Model</label>
+                <select id="modelSelect" class="text-input">
+                    <option value="gemini-2.0-flash">Gemini 2.0 Flash (Fast)</option>
+                    <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite (Fastest)</option>
+                    <option value="gemini-1.5-pro">Gemini 1.5 Pro (Accurate)</option>
+                </select>
+                <button class="btn-primary" style="margin-top:20px;width:100%" onclick="saveSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="app">
+        <header class="topbar">
+            <div class="topbar-left">
+                <span class="logo">🧠</span>
+                <h1>Auto Answer</h1>
+                <span class="badge">AI Powered</span>
+            </div>
+            <div class="topbar-right">
+                <button class="icon-btn" onclick="toggleSettings()" title="Settings">⚙️</button>
+            </div>
+        </header>
+
+        <main class="main">
+            <!-- Input Section -->
+            <section class="input-section">
+                <!-- Tab switcher -->
+                <div class="tabs">
+                    <button class="tab active" id="tabImage" onclick="switchTab('image')">📸 Screenshot</button>
+                    <button class="tab" id="tabText" onclick="switchTab('text')">📝 Text</button>
+                </div>
+
+                <!-- Image input -->
+                <div class="tab-content active" id="contentImage">
+                    <div class="drop-zone" id="dropZone">
+                        <div class="drop-zone-inner" id="dropZoneInner">
+                            <div class="drop-icon">📋</div>
+                            <p class="drop-title">Paste Screenshot Here</p>
+                            <p class="drop-hint">Press <kbd>Ctrl</kbd>+<kbd>V</kbd> or drag & drop an image</p>
+                        </div>
+                        <img id="previewImage" class="preview-image" style="display:none" />
+                    </div>
+                    <button class="btn-clear" id="clearImageBtn" style="display:none" onclick="clearImage()">✕ Clear Image</button>
+                </div>
+
+                <!-- Text input -->
+                <div class="tab-content" id="contentText">
+                    <textarea id="questionInput" class="text-input textarea" placeholder="Paste the question and options here...&#10;&#10;Example:&#10;What number comes next: 2, 6, 18, 54, ...?&#10;A. 108&#10;B. 162&#10;C. 148&#10;D. 216" rows="7"></textarea>
+                </div>
+
+                <button class="btn-primary btn-answer" id="answerBtn" onclick="getAnswer()">
+                    <span id="btnText">🔍 Get Answer</span>
+                    <span id="btnLoader" class="loader" style="display:none"></span>
+                </button>
+            </section>
+
+            <!-- Answer Section -->
+            <section class="answer-section" id="answerSection" style="display:none">
+                <div class="answer-card">
+                    <div class="answer-header">
+                        <span class="answer-label">Answer</span>
+                        <span class="answer-letter" id="answerLetter">—</span>
+                    </div>
+                    <div class="answer-explanation" id="answerExplanation"></div>
+                </div>
+            </section>
+
+            <!-- History -->
+            <section class="history-section" id="historySection" style="display:none">
+                <div class="section-header">
+                    <h3>📜 History</h3>
+                    <button class="btn-text" onclick="clearHistory()">Clear</button>
+                </div>
+                <div id="historyList" class="history-list"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

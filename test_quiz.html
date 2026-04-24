@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psikotes - Online Assessment Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f6fa;
+            --card: #ffffff;
+            --primary: #2d3436;
+            --secondary: #636e72;
+            --accent: #0984e3;
+            --accent-light: #74b9ff;
+            --border: #dfe6e9;
+            --success: #00b894;
+            --danger: #d63031;
+            --radius: 14px;
+            --shadow: 0 2px 20px rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--primary);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0984e3, #6c5ce7);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(9, 132, 227, 0.3);
+        }
+
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .timer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .timer-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            max-width: 900px;
+            margin: 24px auto 0;
+            padding: 0 24px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0984e3, #6c5ce7);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        /* Main content */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 24px 60px;
+        }
+
+        /* Question card */
+        .question-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .question-card:hover {
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #0984e3, #6c5ce7);
+            color: white;
+            min-width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .question-category {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            font-weight: 600;
+            background: rgba(9, 132, 227, 0.08);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: var(--primary);
+            margin-bottom: 22px;
+            font-weight: 500;
+        }
+
+        /* Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: var(--accent-light);
+            background: rgba(9, 132, 227, 0.03);
+            transform: translateX(4px);
+        }
+
+        .option.selected {
+            border-color: var(--accent);
+            background: rgba(9, 132, 227, 0.06);
+        }
+
+        .option-letter {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: var(--accent);
+            color: white;
+        }
+
+        .option-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .option input[type="radio"] {
+            display: none;
+        }
+
+        /* Submit area */
+        .submit-area {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #0984e3, #6c5ce7);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(9, 132, 227, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(9, 132, 227, 0.4);
+        }
+
+        /* Results */
+        .result-banner {
+            display: none;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--success);
+            margin-bottom: 24px;
+        }
+
+        .result-banner.show { display: block; }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00b894, #0984e3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-label {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        .option.correct {
+            border-color: var(--success) !important;
+            background: rgba(0, 184, 148, 0.08) !important;
+        }
+
+        .option.wrong {
+            border-color: var(--danger) !important;
+            background: rgba(214, 48, 49, 0.06) !important;
+        }
+
+        .option.correct .option-letter {
+            background: var(--success) !important;
+            color: white !important;
+        }
+
+        .option.wrong .option-letter {
+            background: var(--danger) !important;
+            color: white !important;
+        }
+
+        @media (max-width: 600px) {
+            .question-card { padding: 20px; }
+            .header-inner { flex-direction: column; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-inner">
+            <h1>
+                📋 Psikotes Online
+                <span class="header-badge">Assessment Test</span>
+            </h1>
+            <div class="timer">
+                <span class="timer-icon">⏱️</span>
+                <span id="timer">30:00</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <div class="progress-label">
+            <span id="answeredCount">0 of 10 answered</span>
+            <span id="progressPercent">0%</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="resultBanner" class="result-banner">
+            <div class="result-score" id="scoreText">0/10</div>
+            <div class="result-label">Your Score</div>
+        </div>
+
+        <div id="questionsContainer"></div>
+
+        <div class="submit-area">
+            <button class="btn-submit" id="submitBtn" onclick="submitTest()">Submit Test</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                id: 1,
+                category: "Number Series",
+                question: "What number comes next in the series: 2, 6, 18, 54, ...?",
+                options: ["108", "162", "148", "216"],
+                correct: 1 // B = 162
+            },
+            {
+                id: 2,
+                category: "Verbal Analogy",
+                question: "BOOK is to READING as FORK is to ____?",
+                options: ["Kitchen", "Eating", "Cooking", "Spoon"],
+                correct: 1 // B = Eating
+            },
+            {
+                id: 3,
+                category: "Logical Reasoning",
+                question: "All roses are flowers. Some flowers fade quickly. Which conclusion is valid?",
+                options: [
+                    "All roses fade quickly",
+                    "Some roses fade quickly",
+                    "Some roses may fade quickly",
+                    "No roses fade quickly"
+                ],
+                correct: 2 // C
+            },
+            {
+                id: 4,
+                category: "Number Series",
+                question: "Find the missing number: 3, 7, 15, 31, 63, ____",
+                options: ["95", "111", "121", "127"],
+                correct: 3 // D = 127
+            },
+            {
+                id: 5,
+                category: "Verbal Analogy",
+                question: "PAINTER is to BRUSH as WRITER is to ____?",
+                options: ["Book", "Paper", "Pen", "Story"],
+                correct: 2 // C = Pen
+            },
+            {
+                id: 6,
+                category: "Classification",
+                question: "Which one does NOT belong in the group? Apple, Mango, Carrot, Banana, Orange",
+                options: ["Apple", "Mango", "Carrot", "Orange"],
+                correct: 2 // C = Carrot
+            },
+            {
+                id: 7,
+                category: "Mathematical",
+                question: "If a shirt originally costs $80 and is discounted by 25%, then an additional 10% off the sale price, what is the final price?",
+                options: ["$48.00", "$52.00", "$54.00", "$56.00"],
+                correct: 2 // C = $54.00
+            },
+            {
+                id: 8,
+                category: "Logical Reasoning",
+                question: "If all Bloops are Razzies and all Razzies are Lazzies, then which statement is definitely true?",
+                options: [
+                    "All Lazzies are Bloops",
+                    "All Razzies are Bloops",
+                    "All Bloops are Lazzies",
+                    "Some Lazzies are Razzies but not Bloops"
+                ],
+                correct: 2 // C = All Bloops are Lazzies
+            },
+            {
+                id: 9,
+                category: "Pattern Recognition",
+                question: "In the sequence: AZ, BY, CX, DW, ____ — what comes next?",
+                options: ["EU", "EV", "FV", "EX"],
+                correct: 1 // B = EV
+            },
+            {
+                id: 10,
+                category: "Spatial Reasoning",
+                question: "A clock shows 3:15. What is the angle between the hour and minute hands?",
+                options: ["0°", "7.5°", "15°", "22.5°"],
+                correct: 1 // B = 7.5°
+            }
+        ];
+
+        const letters = ['A', 'B', 'C', 'D'];
+        const userAnswers = {};
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = questions.map(q => `
+                <div class="question-card" id="q${q.id}">
+                    <div class="question-header">
+                        <div class="question-number">${q.id}</div>
+                        <div class="question-category">${q.category}</div>
+                    </div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <label class="option" id="q${q.id}_opt${i}" onclick="selectOption(${q.id}, ${i})">
+                                <input type="radio" name="q${q.id}" value="${i}">
+                                <div class="option-letter">${letters[i]}</div>
+                                <div class="option-text">${opt}</div>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectOption(qId, optIndex) {
+            userAnswers[qId] = optIndex;
+
+            // Clear previous selection
+            document.querySelectorAll(`#q${qId} .option`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Mark selected
+            document.getElementById(`q${qId}_opt${optIndex}`).classList.add('selected');
+
+            // Update progress
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(userAnswers).length;
+            const total = questions.length;
+            const pct = Math.round((answered / total) * 100);
+
+            document.getElementById('progressFill').style.width = `${pct}%`;
+            document.getElementById('answeredCount').textContent = `${answered} of ${total} answered`;
+            document.getElementById('progressPercent').textContent = `${pct}%`;
+        }
+
+        function submitTest() {
+            let score = 0;
+
+            questions.forEach(q => {
+                const userAns = userAnswers[q.id];
+                const options = document.querySelectorAll(`#q${q.id} .option`);
+
+                // Disable all options
+                options.forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                });
+
+                // Mark correct answer
+                document.getElementById(`q${q.id}_opt${q.correct}`).classList.add('correct');
+
+                // Mark user's wrong answer
+                if (userAns !== undefined && userAns !== q.correct) {
+                    document.getElementById(`q${q.id}_opt${userAns}`).classList.add('wrong');
+                }
+
+                if (userAns === q.correct) score++;
+            });
+
+            // Show result
+            const banner = document.getElementById('resultBanner');
+            banner.classList.add('show');
+            document.getElementById('scoreText').textContent = `${score}/${questions.length}`;
+
+            // Hide submit button
+            document.getElementById('submitBtn').style.display = 'none';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Timer
+        let timeLeft = 30 * 60;
+        function updateTimer() {
+            const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const secs = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${mins}:${secs}`;
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        renderQuestions();
+        updateTimer();
+    </script>
+</body>
+</html>
