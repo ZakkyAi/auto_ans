@@ -4,155 +4,84 @@
     <meta charset="UTF-8">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            width: 320px;
-            font-family: 'Segoe UI', sans-serif;
-            background: #0d0d14;
-            color: #eee;
-            padding: 20px;
+            width: 280px;
+            font-family: sans-serif;
+            font-size: 13px;
+            padding: 12px;
+            background: #fff;
+            color: #000;
         }
 
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .badge {
-            background: rgba(124,92,252,0.15);
-            color: #a78bfa;
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: 600;
+        h1 {
+            font-size: 14px;
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            font-size: 11px;
-            font-weight: 600;
-            color: #777;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            margin-bottom: 3px;
         }
 
-        input, select {
+        input, select, button {
             width: 100%;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 10px 12px;
-            color: #eee;
+            display: block;
+            margin-bottom: 10px;
+            padding: 6px 8px;
             font-size: 13px;
-            font-family: 'Segoe UI', sans-serif;
-            outline: none;
-            margin-bottom: 14px;
+            font-family: sans-serif;
+            border: 1px solid #999;
+            background: #fff;
+            color: #000;
         }
 
-        input:focus, select:focus {
-            border-color: #7c5cfc;
-        }
-
-        select { cursor: pointer; }
-        select option { background: #1a1a2e; }
-
-        .btn {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
+        button {
             cursor: pointer;
-            font-family: 'Segoe UI', sans-serif;
-            transition: all 0.2s;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #7c5cfc, #9b6dff);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(124,92,252,0.3);
-        }
-
-        .btn-primary:disabled {
+        button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
         }
 
-        .status {
-            margin-top: 14px;
-            padding: 10px;
-            border-radius: 8px;
+        #status {
+            margin-top: 6px;
             font-size: 12px;
-            text-align: center;
             display: none;
         }
 
-        .status.show { display: block; }
+        #status.show { display: block; }
 
-        .status.success {
-            background: rgba(52,211,153,0.1);
-            color: #34d399;
-        }
-
-        .status.error {
-            background: rgba(248,113,113,0.1);
-            color: #f87171;
-        }
-
-        .divider {
-            border: none;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            margin: 16px 0;
-        }
-
-        .hint {
+        p.hint {
             font-size: 11px;
             color: #555;
-            text-align: center;
-            margin-top: 12px;
-            line-height: 1.5;
+            margin-top: 8px;
+            border-top: 1px solid #ccc;
+            padding-top: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <span style="font-size:22px">🧠</span>
-        <h1>Auto Answer</h1>
-        <span class="badge">AI</span>
-    </div>
+    <h1>Auto Answer</h1>
 
-    <label>API Key</label>
+    <label for="apiKey">API Key</label>
     <input type="password" id="apiKey" placeholder="AIza..." />
 
-    <label>Model</label>
+    <label for="model">Model</label>
     <select id="model">
-        <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash ✓</option>
+        <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash</option>
         <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
         <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
         <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite</option>
         <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
     </select>
 
-    <button class="btn btn-primary" id="scanBtn">🔍 Scan & Answer</button>
+    <button id="scanBtn">Scan &amp; Answer</button>
 
-    <div class="status" id="status"></div>
+    <div id="status"></div>
 
-    <hr class="divider">
-    <p class="hint">Open any quiz page, then click<br>"Scan & Answer" to auto-fill answers.</p>
+    <p class="hint">Open any quiz page, then click "Scan &amp; Answer" to auto-fill answers.</p>
 
     <script src="popup.js"></script>
 </body>
